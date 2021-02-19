@@ -76,7 +76,8 @@ class DatabaseProvider {
     DateTime date2,
   ) async {
     final db = await database;
-    var response = await db.rawQuery('SELECT * FROM sessions WHERE date BETWEEN'
+    var response = await db.rawQuery(
+        'SELECT * FROM sessions WHERE date BETWEEN '
         '${date1.microsecondsSinceEpoch} AND ${date2.microsecondsSinceEpoch}');
     List<SessionInfo> list =
         response.map((c) => SessionInfo.fromMap(c)).toList();
