@@ -8,7 +8,6 @@ class SessionInfo {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'date': date,
       'duration': duration,
       'category': category,
@@ -16,7 +15,6 @@ class SessionInfo {
   }
 
   factory SessionInfo.fromMap(Map<String, dynamic> json) => new SessionInfo(
-        id: json['id'],
         date: json['date'],
         duration: json['duration'],
         category: json['category'],

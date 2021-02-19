@@ -27,3 +27,45 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 }
+
+class ChartView extends StatefulWidget {
+  @override
+  _ChartViewState createState() => _ChartViewState();
+}
+
+class _ChartViewState extends State<ChartView> {
+  DateTime _dateTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _dateTime = DateTime.now();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.utc(2021, 2, 1),
+              lastDate: DateTime(2031, 12, 31),
+            ).then((value) {
+              setState(() {
+                _dateTime = value;
+              });
+            });
+          },
+          child: Text('date'),
+        ),
+        Text(
+          _dateTime.toString(),
+          textScaleFactor: 2,
+        ),
+      ],
+    );
+  }
+}

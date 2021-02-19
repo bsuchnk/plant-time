@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_app/constants.dart';
+import 'package:timer_app/sessioninfo.dart';
+import 'package:timer_app/database.dart';
+import 'dart:developer' as developer;
+import 'dart:core';
 
 class SessionPage extends StatefulWidget {
   @override
@@ -19,7 +23,7 @@ class _SessionPageState extends State<SessionPage> {
     super.initState();
     _loading = true;
     _progressValue = 0;
-    _duration = globalDuration;
+    _duration = currentDuration;
 
     currentPlantPhase = 0;
 
@@ -59,10 +63,8 @@ class _SessionPageState extends State<SessionPage> {
                 Container(
                   width: size.height * 0.4,
                   height: size.height * 0.4,
-                  child: Image.asset('assets/images/' +
-                      plants[currentPlant] +
-                      currentPlantPhase.toString() +
-                      '.png'),
+                  child:
+                      Image.asset(plantPath(currentPlant, currentPlantPhase)),
                 )
               ],
             ),
@@ -146,6 +148,15 @@ class _SessionPageState extends State<SessionPage> {
           _progressValue = _duration;
           _loading = false;
           t.cancel();
+
+          SessionInfo sessionInfo = SessionInfo(
+            date: DateTime.now().microsecondsSinceEpoch,
+            duration: currentDuration,
+            category: categories[currentCategory],
+          );
+
+          DatabaseProvider.db.addSessionInfoToDatabase(sessionInfo);
+
           return;
         }
         currentPlantPhase = (_progressValue / _duration * 3).floor();

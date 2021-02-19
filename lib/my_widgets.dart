@@ -14,7 +14,7 @@ class _OneOfButtonsState extends State<OneOfButtons> {
     // TODO: implement initState
     super.initState();
     _index = 3;
-    globalDuration = possibleDurations[_index];
+    currentDuration = possibleDurations[_index];
   }
 
   @override
@@ -33,7 +33,7 @@ class _OneOfButtonsState extends State<OneOfButtons> {
             onPressed: () {
               setState(() {
                 _index = i;
-                globalDuration = possibleDurations[i]; // * 60;
+                currentDuration = possibleDurations[i]; // * 60;
               });
             },
             child: Text('${possibleDurations[i]}'),
