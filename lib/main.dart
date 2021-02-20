@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:timer_app/constants.dart';
 import 'package:timer_app/database.dart';
 import 'package:timer_app/session.dart';
@@ -103,7 +104,7 @@ class _MyPageState extends State<MyPage> {
           Container(
             width: size.height * 0.4,
             height: size.height * 0.4,
-            child: Image.asset(plantPath(currentPlant, 2)),
+            child: Image.asset(plantPath(currentPlant, 0)),
           ),
           Spacer(),
           OneOfButtons(),
@@ -157,7 +158,7 @@ class _MyPageState extends State<MyPage> {
               children: [
                 ChartView(),
                 buildStatsLog(),
-                CircularProgressIndicator(),
+                GardenView(),
               ],
             ),
           ),
@@ -198,14 +199,17 @@ class _MyPageState extends State<MyPage> {
 
   Future<DataTable> _buildSessionInfoDataRows() async {
     List<SessionInfo> list = await DatabaseProvider.db.getAllSessionInfos();
+    list.sort((a, b) => b.date.compareTo(a.date));
     List<DataRow> rows = [];
+
+    DateFormat _readableDate = DateFormat('dd.MM.yy, HH:mm:ss');
 
     for (int i = 0; i < list.length; i++) {
       DateTime date = DateTime.fromMicrosecondsSinceEpoch(list[i].date);
 
       rows.add(DataRow(
         cells: <DataCell>[
-          DataCell(Text(date.toString())),
+          DataCell(Text(_readableDate.format(date))),
           DataCell(Text('${list[i].duration} min')),
           DataCell(Text('${list[i].category}')),
         ],

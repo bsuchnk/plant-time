@@ -14,7 +14,7 @@ class _OneOfButtonsState extends State<OneOfButtons> {
     // TODO: implement initState
     super.initState();
     _index = 3;
-    currentDuration = possibleDurations[_index];
+    currentDuration = possibleDurations[_index] * 60;
   }
 
   @override
@@ -125,8 +125,11 @@ class _OneOfCategoriesState extends State<OneOfCategories> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: _buildCategoryList(),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: _buildCategoryList(),
+      ),
     );
   }
 

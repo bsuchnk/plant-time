@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_app/constants.dart';
 import 'package:timer_app/sessioninfo.dart';
 import 'package:timer_app/database.dart';
 import 'dart:developer' as developer;
 import 'dart:core';
+import 'package:flutter_beep/flutter_beep.dart';
 
 class SessionPage extends StatefulWidget {
   @override
@@ -48,6 +50,15 @@ class _SessionPageState extends State<SessionPage> {
             SizedBox(height: 10),
             Stack(
               children: <Widget>[
+                Container(
+                  width: size.height * 0.4,
+                  height: size.height * 0.4,
+                  child: FittedBox(
+                    child: Image.asset(
+                      plantPath(currentPlant, currentPlantPhase),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   width: size.height * 0.4,
                   height: size.height * 0.4,
@@ -60,12 +71,6 @@ class _SessionPageState extends State<SessionPage> {
                     value: _progressValue.toDouble() / _duration.toDouble(),
                   ),
                 ),
-                Container(
-                  width: size.height * 0.4,
-                  height: size.height * 0.4,
-                  child:
-                      Image.asset(plantPath(currentPlant, currentPlantPhase)),
-                )
               ],
             ),
             SizedBox(height: 10),
@@ -151,11 +156,14 @@ class _SessionPageState extends State<SessionPage> {
 
           SessionInfo sessionInfo = SessionInfo(
             date: DateTime.now().microsecondsSinceEpoch,
-            duration: currentDuration,
+            duration: currentDuration ~/ 60,
             category: categories[currentCategory],
+            plant: currentPlant,
           );
 
           DatabaseProvider.db.addSessionInfoToDatabase(sessionInfo);
+          FlutterBeep.playSysSound(
+              AndroidSoundIDs.TONE_CDMA_CALL_SIGNAL_ISDN_PING_RING);
 
           return;
         }

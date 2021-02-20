@@ -30,7 +30,8 @@ class DatabaseProvider {
           "CREATE TABLE sessions("
           "date INTEGER NOT NULL PRIMARY KEY,"
           "duration INTEGER NOT NULL,"
-          "category TEXT NOT NULL"
+          "category TEXT NOT NULL,"
+          "plant INTEGER NOT NULL"
           ")",
         );
       },
@@ -44,7 +45,8 @@ class DatabaseProvider {
       //     "CREATE TABLE sessions("
       //     "date INTEGER NOT NULL PRIMARY KEY,"
       //     "duration INTEGER NOT NULL,"
-      //     "category TEXT NOT NULL"
+      //     "category TEXT NOT NULL,"
+      //     "plant INTEGER NOT NULL"
       //     ")",
       //   );
       // },

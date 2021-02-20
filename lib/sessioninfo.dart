@@ -1,16 +1,17 @@
 class SessionInfo {
-  final int id;
   final int date;
   final int duration;
   final String category;
+  final int plant;
 
-  SessionInfo({this.id, this.date, this.duration, this.category});
+  SessionInfo({this.date, this.duration, this.category, this.plant});
 
   Map<String, dynamic> toMap() {
     return {
       'date': date,
       'duration': duration,
       'category': category,
+      'plant': plant,
     };
   }
 
@@ -18,5 +19,6 @@ class SessionInfo {
         date: json['date'],
         duration: json['duration'],
         category: json['category'],
+        plant: json['plant'],
       );
 }
