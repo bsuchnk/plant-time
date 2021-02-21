@@ -25,7 +25,7 @@ class _SessionPageState extends State<SessionPage> {
     super.initState();
     _loading = true;
     _progressValue = 0;
-    _duration = currentDuration;
+    _duration = possibleDurations[currentDuration] * 60;
 
     currentPlantPhase = 0;
 
@@ -156,7 +156,7 @@ class _SessionPageState extends State<SessionPage> {
 
           SessionInfo sessionInfo = SessionInfo(
             date: DateTime.now().microsecondsSinceEpoch,
-            duration: currentDuration ~/ 60,
+            duration: possibleDurations[currentDuration],
             category: categories[currentCategory],
             plant: currentPlant,
           );

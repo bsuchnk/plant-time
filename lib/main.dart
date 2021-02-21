@@ -8,6 +8,7 @@ import 'package:timer_app/sessioninfo.dart';
 import 'package:timer_app/stats_page.dart';
 import 'package:timer_app/my_widgets.dart';
 import 'dart:developer' as developer;
+import 'package:timer_app/settings_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,6 +53,7 @@ class _MyPageState extends State<MyPage> {
 
     return DefaultTabController(
       length: 3,
+      initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           title: Center(
@@ -69,12 +71,16 @@ class _MyPageState extends State<MyPage> {
                     Tab(icon: Icon(Icons.list)),
                     Tab(icon: Icon(Icons.brightness_7_outlined)),
                   ],
+                  labelColor: Colors.yellow,
+                  unselectedLabelColor: Colors.black,
                 )
               : null,
         ),
         body: _selectedMenu == 1
             ? buildHome(size, context)
-            : buildStats(size, context),
+            : _selectedMenu == 2
+                ? StatsPage() //buildStats(size, context)
+                : SettingsPage(),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -146,88 +152,6 @@ class _MyPageState extends State<MyPage> {
         ]),
       ),
     );
-  }
-
-  Container buildStats(Size size, BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          Expanded(
-            child: TabBarView(
-              children: [
-                ChartView(),
-                buildStatsLog(),
-                GardenView(),
-              ],
-            ),
-          ),
-        ],
-      ),
-      decoration: new BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Colors.lightGreenAccent,
-          Colors.yellowAccent,
-        ]),
-      ),
-    );
-  }
-
-  SingleChildScrollView buildStatsLog() {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          FutureBuilder(
-              future: _buildSessionInfoDataRows(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return snapshot.data;
-                } else {
-                  return Column(
-                    children: <Widget>[
-                      //Spacer(),
-                      CircularProgressIndicator(),
-                      //Spacer(),
-                    ],
-                  );
-                }
-              }),
-        ],
-      ),
-    );
-  }
-
-  Future<DataTable> _buildSessionInfoDataRows() async {
-    List<SessionInfo> list = await DatabaseProvider.db.getAllSessionInfos();
-    list.sort((a, b) => b.date.compareTo(a.date));
-    List<DataRow> rows = [];
-
-    DateFormat _readableDate = DateFormat('dd.MM.yy, HH:mm:ss');
-
-    for (int i = 0; i < list.length; i++) {
-      DateTime date = DateTime.fromMicrosecondsSinceEpoch(list[i].date);
-
-      rows.add(DataRow(
-        cells: <DataCell>[
-          DataCell(Text(_readableDate.format(date))),
-          DataCell(Text('${list[i].duration} min')),
-          DataCell(Text('${list[i].category}')),
-        ],
-      ));
-    }
-
-    DataTable table = DataTable(
-      columns: <DataColumn>[
-        DataColumn(label: Text('date')),
-        DataColumn(label: Text('duration')),
-        DataColumn(label: Text('category')),
-      ],
-      rows: rows,
-      sortColumnIndex: 0,
-      sortAscending: true,
-    );
-
-    return table;
   }
 
   void _onBottomItemTapped(int index) {

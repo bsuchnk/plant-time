@@ -13,8 +13,7 @@ class _OneOfButtonsState extends State<OneOfButtons> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _index = 3;
-    currentDuration = possibleDurations[_index] * 60;
+    _index = currentDuration;
   }
 
   @override
@@ -33,7 +32,7 @@ class _OneOfButtonsState extends State<OneOfButtons> {
             onPressed: () {
               setState(() {
                 _index = i;
-                currentDuration = possibleDurations[i]; // * 60;
+                currentDuration = i;
               });
             },
             child: Text('${possibleDurations[i]}'),
@@ -68,7 +67,7 @@ class _OneOfPlantsState extends State<OneOfPlants> {
   @override
   void initState() {
     super.initState();
-    _index = 0;
+    _index = currentPlant;
   }
 
   @override
@@ -119,8 +118,7 @@ class _OneOfCategoriesState extends State<OneOfCategories> {
   @override
   void initState() {
     super.initState();
-    _index = 0;
-    currentCategory = _index;
+    _index = currentCategory;
   }
 
   @override
@@ -154,6 +152,7 @@ class _OneOfCategoriesState extends State<OneOfCategories> {
           },
           selectedColor: col_grass,
           backgroundColor: col_ground,
+          elevation: 2,
         ),
       );
     }
