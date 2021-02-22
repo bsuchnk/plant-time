@@ -110,7 +110,16 @@ class _MyPageState extends State<MyPage> {
           Container(
             width: size.height * 0.4,
             height: size.height * 0.4,
-            child: Image.asset(plantPath(currentPlant, 0)),
+            child: Stack(
+              children: [
+                FittedBox(
+                  child: Image.asset(plantPath(currentPlant, 0)),
+                  fit: BoxFit.contain,
+                ),
+                Positioned.fill(child: Image.asset('assets/images/frame.png')),
+              ],
+              fit: StackFit.expand,
+            ),
           ),
           Spacer(),
           OneOfButtons(),

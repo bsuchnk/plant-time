@@ -29,6 +29,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0-nullsafety.1"
+  charts_common:
+    dependency: transitive
+    description:
+      name: charts_common
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.0"
+  charts_flutter:
+    dependency: "direct main"
+    description:
+      name: charts_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.0"
   clock:
     dependency: transitive
     description:
@@ -88,13 +102,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  graphic:
-    dependency: "direct main"
-    description:
-      name: graphic
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   intl:
     dependency: "direct main"
     description:
@@ -102,6 +109,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.4"
   matcher:
     dependency: transitive
     description:

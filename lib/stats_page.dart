@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:timer_app/constants.dart';
 import 'package:timer_app/database.dart';
 import 'package:timer_app/sessioninfo.dart';
-import 'package:graphic/graphic.dart' as graphic;
 import 'package:intl/intl.dart';
 import 'dart:developer' as developer;
 import 'dart:math';
+import 'package:timer_app/chartview.dart';
 
 class StatsPage extends StatefulWidget {
   @override
@@ -97,82 +97,7 @@ class _LogViewState extends State<LogView> {
   }
 }
 
-class ChartView extends StatefulWidget {
-  @override
-  _ChartViewState createState() => _ChartViewState();
-}
-
-class _ChartViewState extends State<ChartView> {
-  List<Map> _data;
-
-  @override
-  void initState() {
-    super.initState();
-    _data = [];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-
-    return Column(
-      children: [
-        Column(
-          children: [
-            SizedBox(
-              width: screenSize.width,
-              height: screenSize.height * 0.3,
-              child: graphic.Chart(
-                data: _calculateData(),
-                scales: {
-                  'hour': graphic.CatScale(
-                    accessor: (map) => map['hour'] as String,
-                  ),
-                  'minutes': graphic.LinearScale(
-                    accessor: (map) => map['minutes'] as num,
-                    nice: true,
-                  )
-                },
-                geoms: [
-                  graphic.IntervalGeom(
-                    position: graphic.PositionAttr(field: 'hour*minutes'),
-                    shape: graphic.ShapeAttr(values: [
-                      graphic.RectShape(radius: Radius.circular(5))
-                    ]),
-                  ),
-                ],
-                axes: {
-                  'hour': graphic.Defaults.horizontalAxis,
-                  'minutes': graphic.Defaults.verticalAxis,
-                },
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  List<Map> _calculateData() {
-    _data = [];
-    for (int i = 0; i < 24; i++) {
-      _data.add({'hour': i.toString(), 'minutes': 0});
-    }
-
-    //await DatabaseProvider.db.getAllSessionInfos();
-    //developer.log(list.toString());
-    for (int i = 0; i < currentSessionInfoList.length; i++) {
-      DateTime date =
-          DateTime.fromMicrosecondsSinceEpoch(currentSessionInfoList[i].date);
-      for (int j = 0; j < 24; j++) {
-        if (_data[j]['hour'] == date.hour.toString()) {
-          _data[j]['minutes'] += currentSessionInfoList[i].duration;
-        }
-      }
-    }
-    return _data;
-  }
-}
+//
 
 class GardenView extends StatefulWidget {
   @override
@@ -185,28 +110,33 @@ class _GardenViewState extends State<GardenView> {
     Size screenSize = MediaQuery.of(context).size;
 
     return Container(
-      child: SizedBox(
-        width: screenSize.width,
-        height: screenSize.height * 0.3,
-        child: Stack(
-          children: _buildGarden(currentSessionInfoList),
-        ),
-      ),
+      child: _buildGallery(),
     );
   }
 
-  _buildGarden(List<SessionInfo> data) {
+  _buildGallery() {
+    return GridView.count(
+      crossAxisCount: 4,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      padding: EdgeInsets.all(20),
+      children: _buildImageList(),
+    );
+  }
+
+  _buildImageList() {
     List<Widget> list = [];
-    for (int i = 0; i < data.length; i++) {
-      list.add(Positioned(
-        top: Random().nextInt(200 - 64).toDouble(),
-        left: Random().nextInt(400 - 64).toDouble(),
-        child: SizedBox(
-          width: 64,
-          height: 64,
-          child: Image.asset(plantPath(data[i].plant, 2)),
+    for (int i = 0; i < currentSessionInfoList.length; i++) {
+      list.add(
+        Stack(
+          children: [
+            Center(
+              child: Image.asset(plantPath(currentSessionInfoList[i].plant, 2)),
+            ),
+            Image.asset('assets/images/frame.png'),
+          ],
         ),
-      ));
+      );
     }
     return list;
   }

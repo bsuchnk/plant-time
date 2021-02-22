@@ -17,6 +17,13 @@ const List categoryIcons = [
   Icons.code,
   Icons.sentiment_very_satisfied_outlined,
 ];
+const List categoryColors = [
+  Colors.blue,
+  Colors.red,
+  Colors.green,
+  Colors.amber,
+  Colors.grey,
+];
 
 const List<String> plants = [
   'drzewko',
