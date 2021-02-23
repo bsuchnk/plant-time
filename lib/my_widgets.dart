@@ -118,6 +118,14 @@ class _OneOfCategoriesState extends State<OneOfCategories> {
   @override
   void initState() {
     super.initState();
+    if (categoryVisibilities[currentCategory] == false) {
+      for (int i = 0; i < categoryVisibilities.length; i++) {
+        if (categoryVisibilities[i] == true) {
+          currentCategory = i;
+          break;
+        }
+      }
+    }
     _index = currentCategory;
   }
 
@@ -127,6 +135,7 @@ class _OneOfCategoriesState extends State<OneOfCategories> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: _buildCategoryList(),
+        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       ),
     );
   }
@@ -135,24 +144,29 @@ class _OneOfCategoriesState extends State<OneOfCategories> {
     List<Widget> list = [];
 
     for (int i = 0; i < categories.length; i++) {
+      if (categoryVisibilities[i] == false) continue;
+
       list.add(
-        ChoiceChip(
-          label: Text(categories[i]),
-          selected: _index == i,
-          avatar: CircleAvatar(
-            child: Icon(categoryIcons[i]),
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
+        Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: ChoiceChip(
+            label: Text(categories[i]),
+            selected: _index == i,
+            avatar: CircleAvatar(
+              child: Icon(categoryIcons[i]),
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            ),
+            onSelected: (bool selected) {
+              setState(() {
+                _index = i;
+                currentCategory = _index;
+              });
+            },
+            selectedColor: col_grass,
+            backgroundColor: col_ground,
+            elevation: 2,
           ),
-          onSelected: (bool selected) {
-            setState(() {
-              _index = i;
-              currentCategory = _index;
-            });
-          },
-          selectedColor: col_grass,
-          backgroundColor: col_ground,
-          elevation: 2,
         ),
       );
     }

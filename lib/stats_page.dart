@@ -130,10 +130,36 @@ class _GardenViewState extends State<GardenView> {
       list.add(
         Stack(
           children: [
+            Image.asset('assets/images/background0.png'),
             Center(
-              child: Image.asset(plantPath(currentSessionInfoList[i].plant, 2)),
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      //Size screenSize = MediaQuery.of(context).size;
+                      return SessionInfoCard(currentSessionInfoList[i]);
+                    },
+                  );
+                },
+                child: Image.asset(
+                  plantPath(currentSessionInfoList[i].plant, 2),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            Image.asset('assets/images/frame.png'),
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    //Size screenSize = MediaQuery.of(context).size;
+                    return SessionInfoCard(currentSessionInfoList[i]);
+                  },
+                );
+              },
+              child: Image.asset('assets/images/frame.png'),
+            ),
           ],
         ),
       );

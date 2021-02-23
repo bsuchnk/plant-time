@@ -53,24 +53,41 @@ class _SessionPageState extends State<SessionPage> {
                 Container(
                   width: size.height * 0.4,
                   height: size.height * 0.4,
-                  child: FittedBox(
-                    child: Image.asset(
-                      plantPath(currentPlant, currentPlantPhase),
-                    ),
+                  child: Stack(
+                    children: [
+                      Hero(
+                        tag: 'backgroundHero',
+                        child: Image.asset('assets/images/background0.png'),
+                      ),
+                      Hero(
+                        tag: 'plantHero',
+                        child: FittedBox(
+                          child: Image.asset(
+                            plantPath(currentPlant, currentPlantPhase),
+                          ),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      Hero(
+                        tag: 'frameHero',
+                        child: Image.asset('assets/images/frame.png'),
+                      ),
+                    ],
+                    fit: StackFit.expand,
                   ),
                 ),
-                SizedBox(
-                  width: size.height * 0.4,
-                  height: size.height * 0.4,
-                  child: CircularProgressIndicator(
-                    backgroundColor: col_ground,
-                    strokeWidth: 12,
-                    valueColor: new AlwaysStoppedAnimation<Color>(
-                      col_grass,
-                    ),
-                    value: _progressValue.toDouble() / _duration.toDouble(),
-                  ),
-                ),
+                // SizedBox(
+                //   width: size.height * 0.4,
+                //   height: size.height * 0.4,
+                //   child: CircularProgressIndicator(
+                //     backgroundColor: col_ground,
+                //     strokeWidth: 12,
+                //     valueColor: new AlwaysStoppedAnimation<Color>(
+                //       col_grass,
+                //     ),
+                //     value: _progressValue.toDouble() / _duration.toDouble(),
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height: 10),

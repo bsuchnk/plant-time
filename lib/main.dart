@@ -108,15 +108,25 @@ class _MyPageState extends State<MyPage> {
           ),
           Spacer(),
           Container(
-            width: size.height * 0.4,
-            height: size.height * 0.4,
+            width: size.height * 0.3,
+            height: size.height * 0.3,
             child: Stack(
               children: [
-                FittedBox(
-                  child: Image.asset(plantPath(currentPlant, 0)),
-                  fit: BoxFit.contain,
+                Hero(
+                  tag: 'backgroundHero',
+                  child: Image.asset('assets/images/background0.png'),
                 ),
-                Positioned.fill(child: Image.asset('assets/images/frame.png')),
+                Hero(
+                  tag: 'plantHero',
+                  child: FittedBox(
+                    child: Image.asset(plantPath(currentPlant, 0)),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                Hero(
+                  tag: 'frameHero',
+                  child: Image.asset('assets/images/frame.png'),
+                ),
               ],
               fit: StackFit.expand,
             ),

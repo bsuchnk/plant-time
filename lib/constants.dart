@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_app/sessioninfo.dart';
 
-const List possibleDurations = [5, 15, 30, 45, 60, 90, 180];
+List possibleDurations = [5, 15, 30, 45, 60, 90, 180];
 const List categories = [
   'studying',
   'exercise',
@@ -24,11 +24,13 @@ const List categoryColors = [
   Colors.amber,
   Colors.grey,
 ];
+List categoryVisibilities = [true, true, true, true, true];
 
 const List<String> plants = [
   'drzewko',
   'drzewko_bond',
   'karo',
+  'orang',
 ];
 
 int currentPlant = 0;
