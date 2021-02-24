@@ -28,7 +28,9 @@ dependencies:
   path: any
   charts_flutter: ^0.9.0
   flutter_local_notifications: ^4.0.1
-  flutter_beep: ^0.2.0
+  shared_preferences: ^0.5.12+4
+  vibration: ^1.7.3
+  audioplayers: ^0.16.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -52,6 +54,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/sounds/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

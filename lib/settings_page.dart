@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timer_app/constants.dart';
 import 'package:flutter/services.dart';
+import 'dart:developer' as developer;
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -29,6 +31,17 @@ class _SettingsPageState extends State<SettingsPage> {
             textScaleFactor: 1.5,
           ),
           buildButtonSettings(context),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                possibleDurations = [5, 15, 30, 45, 60, 90, 180];
+              });
+              for (int i = 0; i < possibleDurations.length; i++) {
+                _setPrefDuration(i, possibleDurations[i]);
+              }
+            },
+            child: Text('Set to defaults'),
+          ),
           Divider(),
           Text(
             'Customize categories:',
@@ -77,8 +90,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       onPressed: () {
                         setState(() {
                           int newValue = int.parse(durController.text);
-                          if (newValue > 0 && newValue <= 24 * 60 * 60)
+                          if (newValue > 0 &&
+                              newValue <= 24 * 60) //TODO:max, min
+                          {
                             possibleDurations[i] = newValue;
+                            _setPrefDuration(i, newValue);
+                          }
 
                           Navigator.pop(context);
                         });
@@ -95,6 +112,16 @@ class _SettingsPageState extends State<SettingsPage> {
       ));
     }
     return list;
+  }
+
+  _setPrefDuration(int index, int value) async {
+    var prefs = await SharedPreferences.getInstance();
+    //developer.log('possibleDurations' + index.toString());
+    //developer
+    //    .log(prefs.getInt('possibleDurations' + index.toString()).toString());
+    prefs.setInt('possibleDurations' + index.toString(), value);
+    //developer
+    //    .log(prefs.getInt('possibleDurations' + index.toString()).toString());
   }
 }
 
@@ -137,7 +164,10 @@ class _CategorySettingsState extends State<CategorySettings> {
                       canChange = true;
                   }
                 }
-                if (canChange) categoryVisibilities[i] = selected;
+                if (canChange) {
+                  categoryVisibilities[i] = selected;
+                  _setPrefCategoryVisibility(i, selected);
+                }
               });
             },
             selectedColor: col_grass,
@@ -149,5 +179,10 @@ class _CategorySettingsState extends State<CategorySettings> {
     }
 
     return list;
+  }
+
+  _setPrefCategoryVisibility(int index, bool value) async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setBool('categoryVisibilities' + index.toString(), value);
   }
 }

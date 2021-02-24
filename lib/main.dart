@@ -9,9 +9,15 @@ import 'package:timer_app/stats_page.dart';
 import 'package:timer_app/my_widgets.dart';
 import 'dart:developer' as developer;
 import 'package:timer_app/settings_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,11 +27,35 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.yellow,
+        primarySwatch: Colors.amber, //Colors.yellow,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyPage(),
+      home: FutureBuilder(
+          future: _loadPrefs(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return MyPage();
+            } else {
+              return CircularProgressIndicator();
+            }
+          }),
     );
+  }
+
+  _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    for (int i = 0; i < possibleDurations.length; i++) {
+      possibleDurations[i] =
+          (prefs.getInt('possibleDurations' + i.toString()) ??
+              possibleDurations[i]);
+    }
+    for (int i = 0; i < categoryVisibilities.length; i++) {
+      categoryVisibilities[i] =
+          (prefs.getBool('categoryVisibilities' + i.toString()) ??
+              categoryVisibilities[i]);
+    }
+
+    return true;
   }
 }
 

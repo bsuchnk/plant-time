@@ -117,9 +117,10 @@ class CategoriesSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 100,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Wrap(
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: _buildSummary(),
+        runSpacing: -12,
       ),
     );
   }
@@ -129,21 +130,25 @@ class CategoriesSummary extends StatelessWidget {
 
     for (int i = 0; i < categories.length; i++) {
       list.add(
-        Chip(
-          label: Text(
-            categories[i],
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  offset: Offset(1, 1),
-                  blurRadius: 3,
-                  color: Colors.white,
-                )
-              ],
+        Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Chip(
+            label: Text(
+              categories[i],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    offset: Offset(1, 1),
+                    blurRadius: 3,
+                    color: Colors.white,
+                  )
+                ],
+              ),
             ),
+            backgroundColor: categoryColors[i],
+            elevation: 2,
           ),
-          backgroundColor: categoryColors[i],
         ),
       );
     }

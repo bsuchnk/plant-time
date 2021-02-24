@@ -1,14 +1,15 @@
 import 'dart:async';
 
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_beep/flutter_beep.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_app/constants.dart';
 import 'package:timer_app/sessioninfo.dart';
 import 'package:timer_app/database.dart';
 import 'dart:developer' as developer;
 import 'dart:core';
-import 'package:flutter_beep/flutter_beep.dart';
+import 'package:vibration/vibration.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class SessionPage extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _SessionPageState extends State<SessionPage> {
     super.initState();
     _loading = true;
     _progressValue = 0;
-    _duration = possibleDurations[currentDuration] * 60;
+    _duration = possibleDurations[currentDuration]; // * 60;
 
     currentPlantPhase = 0;
 
@@ -179,13 +180,22 @@ class _SessionPageState extends State<SessionPage> {
           );
 
           DatabaseProvider.db.addSessionInfoToDatabase(sessionInfo);
-          FlutterBeep.playSysSound(
-              AndroidSoundIDs.TONE_CDMA_CALL_SIGNAL_ISDN_PING_RING);
+          _sessionEndNotification();
 
           return;
         }
         currentPlantPhase = (_progressValue / _duration * 3).floor();
       });
     });
+  }
+
+  _sessionEndNotification() async {
+    if (await Vibration.hasVibrator()) {
+      Vibration.vibrate();
+    }
+    AudioCache audioCache = AudioCache();
+    //AudioPlayer audioPlayer = AudioPlayer();
+    //AudioPlayer.logEnabled = true;
+    await audioCache.play('sounds/bipbop1.wav');
   }
 }

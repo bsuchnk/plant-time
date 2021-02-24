@@ -26,25 +26,46 @@ class _StatsPageState extends State<StatsPage> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  showDatePicker(
-                    context: context,
-                    initialDate: currentStatsDate,
-                    firstDate: DateTime.utc(2021, 2, 1),
-                    lastDate: DateTime(2031, 12, 31),
-                  ).then((value) {
-                    if (value != null) {
-                      setState(() {
-                        //_data = [];
-                        currentStatsDate = value;
-                        //_calculateData();
-                        //_getListOfSessionInfos();
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          currentStatsDate =
+                              currentStatsDate.subtract(Duration(days: 1));
+                        });
+                      },
+                      child: Text('<')),
+                  ElevatedButton(
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: currentStatsDate,
+                        firstDate: DateTime.utc(2021, 2, 1),
+                        lastDate: DateTime(2031, 12, 31),
+                      ).then((value) {
+                        if (value != null) {
+                          setState(() {
+                            //_data = [];
+                            currentStatsDate = value;
+                            //_calculateData();
+                            //_getListOfSessionInfos();
+                          });
+                        }
                       });
-                    }
-                  });
-                },
-                child: Text(dayFormat.format(currentStatsDate)),
+                    },
+                    child: Text(dayFormat.format(currentStatsDate)),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          currentStatsDate =
+                              currentStatsDate.add(Duration(days: 1));
+                        });
+                      },
+                      child: Text('>')),
+                ],
               ),
               Expanded(
                 child: TabBarView(
@@ -90,7 +111,9 @@ class _LogViewState extends State<LogView> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          _buildSessionInfoDataRows(context),
+          FittedBox(
+            child: _buildSessionInfoDataRows(context),
+          ),
         ],
       ),
     );
@@ -107,8 +130,6 @@ class GardenView extends StatefulWidget {
 class _GardenViewState extends State<GardenView> {
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-
     return Container(
       child: _buildGallery(),
     );
@@ -116,12 +137,22 @@ class _GardenViewState extends State<GardenView> {
 
   _buildGallery() {
     return GridView.count(
-      crossAxisCount: 4,
+      crossAxisCount: _calculateCrossAxisCount(),
       crossAxisSpacing: 10,
       mainAxisSpacing: 10,
       padding: EdgeInsets.all(20),
-      children: _buildImageList(),
+      children: currentSessionInfoList.length > 0
+          ? _buildImageList()
+          : [Center(child: Text('No items for this day.'))],
     );
+  }
+
+  int _calculateCrossAxisCount() {
+    int len = currentSessionInfoList.length;
+    if (len <= 1) return 1;
+    if (len <= 4) return 2;
+    if (len <= 12) return 3;
+    return 4;
   }
 
   _buildImageList() {
@@ -179,7 +210,8 @@ DataTable _buildSessionInfoDataRows(BuildContext context) {
     rows.add(
       DataRow(
         cells: <DataCell>[
-          DataCell(Text(readableDateFormat.format(date))),
+          DataCell(Text(dayFormat.format(date))),
+          DataCell(Text(dayTimeFormat.format(date))),
           DataCell(Text('${list[i].duration} min')),
           DataCell(Text('${list[i].category}')),
         ],
@@ -204,6 +236,7 @@ DataTable _buildSessionInfoDataRows(BuildContext context) {
     showCheckboxColumn: false,
     columns: <DataColumn>[
       DataColumn(label: Text('Date')),
+      DataColumn(label: Text('Hour')),
       DataColumn(label: Text('Duration')),
       DataColumn(label: Text('Category')),
     ],

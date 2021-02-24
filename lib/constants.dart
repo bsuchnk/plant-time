@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_app/sessioninfo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-List possibleDurations = [5, 15, 30, 45, 60, 90, 180];
+List possibleDurations = [10, 15, 30, 45, 60, 90, 180];
 const List categories = [
   'studying',
   'exercise',
   'books',
   'coding',
   'meditation',
+  'art',
+  'music',
+  'brainstorm',
+  'yoga',
 ];
 const List categoryIcons = [
-  Icons.fitness_center,
   Icons.school_outlined,
+  Icons.fitness_center,
   Icons.menu_book,
   Icons.code,
   Icons.sentiment_very_satisfied_outlined,
+  Icons.create_outlined,
+  Icons.music_note,
+  Icons.wb_incandescent_outlined,
+  Icons.self_improvement,
 ];
 const List categoryColors = [
   Colors.blue,
@@ -23,8 +32,22 @@ const List categoryColors = [
   Colors.green,
   Colors.amber,
   Colors.grey,
+  Colors.deepOrangeAccent,
+  Colors.deepPurpleAccent,
+  Colors.yellowAccent,
+  Colors.tealAccent,
 ];
-List categoryVisibilities = [true, true, true, true, true];
+List categoryVisibilities = [
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+];
 
 const List<String> plants = [
   'drzewko',
@@ -49,4 +72,5 @@ String plantPath(int plant, int phase) {
 }
 
 DateFormat dayFormat = DateFormat('dd.MM.yyyy');
+DateFormat dayTimeFormat = DateFormat('HH:mm:ss');
 DateFormat readableDateFormat = DateFormat('dd.MM.yy, HH:mm:ss');
