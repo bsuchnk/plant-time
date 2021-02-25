@@ -11,6 +11,7 @@ import 'dart:developer' as developer;
 import 'package:timer_app/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+import 'package:timer_app/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,10 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.amber, //Colors.yellow,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: buildThemeData(context),
       home: FutureBuilder(
           future: _loadPrefs(),
           builder: (context, snapshot) {
@@ -144,7 +142,10 @@ class _MyPageState extends State<MyPage> {
               children: [
                 Hero(
                   tag: 'backgroundHero',
-                  child: Image.asset('assets/images/background0.png'),
+                  child: Image.asset(
+                    'assets/images/background0.png',
+                    gaplessPlayback: true,
+                  ),
                 ),
                 Hero(
                   tag: 'plantHero',

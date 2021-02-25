@@ -33,12 +33,37 @@ class _SettingsPageState extends State<SettingsPage> {
           buildButtonSettings(context),
           ElevatedButton(
             onPressed: () {
-              setState(() {
-                possibleDurations = [5, 15, 30, 45, 60, 90, 180];
-              });
-              for (int i = 0; i < possibleDurations.length; i++) {
-                _setPrefDuration(i, possibleDurations[i]);
-              }
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Are you sure?'),
+                    backgroundColor: col_lg,
+                    content:
+                        Text('Your session durations will be set to defaults.'),
+                    actions: [
+                      FlatButton(
+                        child: Text('Yes'),
+                        onPressed: () {
+                          setState(() {
+                            possibleDurations = List.from(defaultDurations);
+                          });
+                          for (int i = 0; i < possibleDurations.length; i++) {
+                            _setPrefDuration(i, possibleDurations[i]);
+                          }
+                          Navigator.pop(context);
+                        },
+                      ),
+                      FlatButton(
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
             },
             child: Text('Set to defaults'),
           ),
@@ -77,6 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text('Select duration in minutes'),
+                  backgroundColor: col_lg,
                   content: TextField(
                     controller: durController,
                     keyboardType: TextInputType.number,
@@ -90,12 +116,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       onPressed: () {
                         setState(() {
                           int newValue = int.parse(durController.text);
-                          if (newValue > 0 &&
-                              newValue <= 24 * 60) //TODO:max, min
-                          {
-                            possibleDurations[i] = newValue;
-                            _setPrefDuration(i, newValue);
-                          }
+                          if (newValue < minDuration)
+                            newValue = minDuration;
+                          else if (newValue > maxDuration)
+                            newValue = maxDuration;
+
+                          possibleDurations[i] = newValue;
+                          _setPrefDuration(i, newValue);
 
                           Navigator.pop(context);
                         });
@@ -108,6 +135,9 @@ class _SettingsPageState extends State<SettingsPage> {
             );
           },
           child: Text('${possibleDurations[i]}'),
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+          ),
         ),
       ));
     }

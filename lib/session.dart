@@ -26,7 +26,7 @@ class _SessionPageState extends State<SessionPage> {
     super.initState();
     _loading = true;
     _progressValue = 0;
-    _duration = possibleDurations[currentDuration]; // * 60;
+    _duration = possibleDurations[currentDuration] * 60;
 
     currentPlantPhase = 0;
 
@@ -65,6 +65,7 @@ class _SessionPageState extends State<SessionPage> {
                         child: FittedBox(
                           child: Image.asset(
                             plantPath(currentPlant, currentPlantPhase),
+                            gaplessPlayback: true,
                           ),
                           fit: BoxFit.contain,
                         ),
@@ -77,18 +78,6 @@ class _SessionPageState extends State<SessionPage> {
                     fit: StackFit.expand,
                   ),
                 ),
-                // SizedBox(
-                //   width: size.height * 0.4,
-                //   height: size.height * 0.4,
-                //   child: CircularProgressIndicator(
-                //     backgroundColor: col_ground,
-                //     strokeWidth: 12,
-                //     valueColor: new AlwaysStoppedAnimation<Color>(
-                //       col_grass,
-                //     ),
-                //     value: _progressValue.toDouble() / _duration.toDouble(),
-                //   ),
-                // ),
               ],
             ),
             SizedBox(height: 10),

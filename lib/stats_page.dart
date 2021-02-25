@@ -92,8 +92,10 @@ class _StatsPageState extends State<StatsPage> {
   Future<List<SessionInfo>> _getListOfSessionInfos() async {
     DateFormat cutTo00 = DateFormat('yyyy-MM-dd');
     DateTime date1 = DateTime.parse(cutTo00.format(currentStatsDate));
+    DateTime date2 =
+        date1.add(Duration(days: 1)).subtract(Duration(microseconds: 1));
     //developer.log(date1.toString());
-    DateTime date2 = currentStatsDate.add(Duration(days: 1));
+    //developer.log(date2.toString());
     currentSessionInfoList =
         await DatabaseProvider.db.getSessionInfosBetween(date1, date2);
     return currentSessionInfoList;

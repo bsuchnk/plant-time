@@ -3,7 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:timer_app/sessioninfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-List possibleDurations = [10, 15, 30, 45, 60, 90, 180];
+const minDuration = 1;
+const maxDuration = 24 * 60;
+const List defaultDurations = [10, 15, 30, 45, 60, 90, 180];
+List possibleDurations = List.from(defaultDurations);
 const List categories = [
   'studying',
   'exercise',
@@ -34,7 +37,7 @@ const List categoryColors = [
   Colors.grey,
   Colors.deepOrangeAccent,
   Colors.deepPurpleAccent,
-  Colors.yellowAccent,
+  Colors.brown,
   Colors.tealAccent,
 ];
 List categoryVisibilities = [
@@ -53,7 +56,6 @@ const List<String> plants = [
   'drzewko',
   'drzewko_bond',
   'karo',
-  'orang',
 ];
 
 int currentPlant = 0;
@@ -66,9 +68,12 @@ List<SessionInfo> currentSessionInfoList = [];
 const Color col_ground = Colors.amber; //Color(0x80DAA520);
 const Color col_grass = Color(0xff32cd32);
 const Color col_gold = Colors.yellow; //Color(0xFFF0E68C);
+const Color col_lg = Colors.lightGreenAccent;
 
-String plantPath(int plant, int phase) {
-  return 'assets/images/' + plants[plant] + phase.toString() + '.png';
+String plantPath(int plant, int phase, {String format = 'png'}) {
+  // TEMPORARY
+  if (plant == 3) format = 'svg';
+  return 'assets/images/' + plants[plant] + phase.toString() + '.' + format;
 }
 
 DateFormat dayFormat = DateFormat('dd.MM.yyyy');
